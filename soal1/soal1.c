@@ -10,52 +10,88 @@
 #include <wait.h>
 
 int main() {
-  int status;
-  pid_t pid, sid;        // Variabel untuk menyimpan PID
-
-  pid = fork();     // Menyimpan PID dari Child Process
-
   pid_t child_id;
+  int status;
 
-  /* Keluar saat fork gagal
-  * (nilai variabel pid < 0) */
-  if (pid < 0) {
-    exit(EXIT_FAILURE);
+  child_id = fork();
+
+  if (child_id < 0) {
+    exit(EXIT_FAILURE); 
   }
 
-  /* Keluar saat fork berhasil
-  * (nilai variabel pid adalah PID dari child process) */
-  if (pid > 0) {
-    exit(EXIT_SUCCESS);
-  }
+  if (child_id == 0) {
+    char *argv[] = {"mkdir", "Musyik", NULL};
+    execv("/bin/mkdir", argv);
+  } 
 
-  umask(0);
+  else {
+    while ((wait(&status)) > 0);
+    child_id = fork();
 
-  sid = setsid();
-  if (sid < 0) {
-    exit(EXIT_FAILURE);
-  }
-
-  /*if ((chdir("/")) < 0) {
-    exit(EXIT_FAILURE);
-  }*/	
-
-  close(STDIN_FILENO);
-  close(STDOUT_FILENO);
-  close(STDERR_FILENO);
-
-  
-  while (1) {
-    char *argv[][4] = {
-      {"/bin/mkdir", "Musyik", NULL},
-      {"/bin/mkdir", "Fylm", NULL},
-      {"/bin/mkdir", "Pyoto", NULL},
-    };
-    for (int idx = 0; idx < 3; idx ++)
-    {
-      if (0 == fork()) continue;
-      execve(argv[idx][0], &argv[idx][0], NULL);
+    if (child_id < 0) {
+      exit(EXIT_FAILURE); 
     }
-    sleep(30);
+
+    if (child_id == 0) {
+      char *argv[] = {"mkdir", "Fylm", NULL};
+      execv("/bin/mkdir", argv);
+    } 
+
+    else {
+      while ((wait(&status)) > 0);
+      child_id = fork();
+
+      if (child_id < 0) {
+        exit(EXIT_FAILURE); 
+      }
+
+      if (child_id == 0) {
+        char *argv[] = {"mkdir", "Pyoto", NULL};
+        execv("/bin/mkdir", argv);
+      } 
+    
+      else{
+	while ((wait(&status)) > 0);
+        child_id = fork();
+
+        if (child_id < 0) {
+          exit(EXIT_FAILURE); 
+        }
+
+        if (child_id == 0) {
+          char *argv[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1FsrAzb9B5ixooGUs0dGiBr-rC7TS9wTD&export=download", "-O", "Foto.ext", NULL};
+	execv("/usr/bin/wget", argv);
+        } 
+
+	else{
+	  while ((wait(&status)) > 0);
+          child_id = fork();
+
+          if (child_id < 0) {
+            exit(EXIT_FAILURE); 
+          }
+
+          if (child_id == 0) {
+            char *argv[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download", "-O", "Musik.ext", NULL};
+	    execv("/usr/bin/wget", argv);
+          }
+	  else{
+	    while ((wait(&status)) > 0);
+            child_id = fork();
+
+            if (child_id < 0) {
+              exit(EXIT_FAILURE); 
+            }
+
+            if (child_id == 0) {
+              char *argv[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download", "-O", "Film.ext", NULL};
+	      execv("/usr/bin/wget", argv);
+            }
+	    else{
+	    }
+	  }
+	}
+      }
+    }
   }
 }
