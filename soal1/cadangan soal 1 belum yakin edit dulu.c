@@ -20,9 +20,9 @@ int main()
 {
   
   time_t w, t;  
-  pid_t pid, sid ;   
-  struct tm *tm, *wm;
+  pid_t pid, sid ;     
   char birthday[100] , etc[100]; 
+  struct tm *tm, *wm;
   
     pid_t child_id = fork();
     pid = fork();  
@@ -55,7 +55,7 @@ int main()
 
  while(1) { 
 
-   pid_t cid1, cid2, cid3, cid4, cid5, cid6, cid7, cid8, cid9, cid10, cid11, cid12, cid13, cid14;
+   pid_t cid1, cid2, cid3, cid4, cid5, cid6, cid7, cid8, cid9, cid10, cid11, cid12;
    
 //set 6 jam sebelum ultah//
     w = time(NULL);
@@ -153,26 +153,33 @@ int main()
     }
     while (1) {
 //ultah rename
+
+        pid_t cid13, cid14;
+        
         w = time(NULL);
         wm = localtime(&w);
         strftime(birthday, 60, "%d-%m-%Y_%H:%M:%S", wm);
         if(strcmp(birthday,"09-04-2021 22:22:00") == 0)
         
         {
-            child_id = fork();
-            if (child_id == 0) {
+            cid13 = fork();
+            if (cid13 == 0) {
                 char *argv[] = {"zip", "-r", "Lopyu_Stevany.zip", "Fylm", "Musyik", "pyoto", NULL};
                 execv("/usr/bin/zip", argv);}
-            while(wait(NULL) != child_id);
-            child_id = fork();
-            if (child_id == 0) 
+            while(wait(NULL) != cid13);
+           
+            cid14 = fork();
+            if (cid14 == 0) 
             {  char *argv[] = {"rm", "-r",  "FILM", "MUSIK", "FOTO", "Fylm",  "Musyik",  "Pyoto", NULL};
                 execv("/bin/rm", argv);}
-            while(wait(NULL) != child_id);
+            while(wait(NULL) != cid14);
             break;
 
         }
     }
   }
+
+
+
 
 
