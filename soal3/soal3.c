@@ -24,15 +24,12 @@ int main(int argc, char **argv) {
 	int pid = (int)getpid();
 	
 	if (strcmp (argv[1], "-z")== 0) {
-		printf ("masuk Z, Berhenti!\n");
 		killerZ();
 	}
 	else if (strcmp (argv[1], "-x")== 0) {
-		printf ("masuk X dan berlanjut\n");
 		killerX(pid);
 	}
 	else {
-		printf ("gak masuk\n");
 		return 0;
 	}
 	
@@ -42,31 +39,31 @@ int main(int argc, char **argv) {
 }
 
 void makeDirectory() {
-		int status;
-		char timeForm[20];
-		time_t sekarang = time(NULL);
-		struct tm *waktu = localtime(&sekarang); 
+	int status;
+	char timeForm[20];
+	time_t sekarang = time(NULL);
+	struct tm *waktu = localtime(&sekarang); 
 		
-    	strftime (timeForm, sizeof(timeForm), "%Y-%m-%d_%H:%M:%S", waktu);
+	strftime (timeForm, sizeof(timeForm), "%Y-%m-%d_%H:%M:%S", waktu);
     	
-    	pid_t child_id;
-		child_id = fork();
+	pid_t child_id;
+	child_id = fork();
 		
-		if (child_id < 0)
-		    exit (EXIT_FAILURE);
-		if (child_id == 0) {
-		    char *argv[] = {"mkdir", timeForm, NULL};
-		    execv ("/bin/mkdir", argv);
-		}
+	if (child_id < 0)
+		exit (EXIT_FAILURE);
+	if (child_id == 0) {
+		char *argv[] = {"mkdir", timeForm, NULL};
+		execv ("/bin/mkdir", argv);
+	}
 		
-		child_id = fork();
+	child_id = fork();
 
-		if (child_id < 0)
-		    exit(EXIT_FAILURE);
-		if (child_id == 0) {
-		    while(wait(&status) > 0);
-		    downloadPics(timeForm);
-		}
+	if (child_id < 0)
+		exit(EXIT_FAILURE);
+	if (child_id == 0) {
+		while(wait(&status) > 0);
+		downloadPics(timeForm);
+	}
 		sleep(40);    	
 	return;
 }
@@ -74,6 +71,7 @@ void makeDirectory() {
 void downloadPics(char dirName[]) {
 	int i, maxPics = 10;
 	for (i=0 ; i<maxPics ; i++) {
+	
 		pid_t child_id;
 		child_id = fork();
 				
