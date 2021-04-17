@@ -16,13 +16,30 @@ void makeDirectory();
 void downloadPics(char dirName[]);
 void makeText(char dirName[]);
 void caesarChiper(char text[]);
+void zipping(char dirName[]);
+void killerZ();
+void killerX(int pid);
 
-int main() {
-	makeDirectory();
+int main(int argc, char **argv) {
+	int pid = (int)getpid();
+	
+	if (strcmp (argv[1], "-z")== 0) {
+		printf ("masuk Z, Berhenti!\n");
+		killerZ();
+	}
+	else if (strcmp (argv[1], "-x")== 0) {
+		printf ("masuk X dan berlanjut\n");
+		killerX(pid);
+	}
+	else {
+		printf ("gak masuk\n");
+		return 0;
+	}
+	
+	while (1) makeDirectory();
 
 	return 0;
 }
-
 
 void makeDirectory() {
 	int i, jmlh = 2;
@@ -69,7 +86,7 @@ void downloadPics(char dirName[]) {
 		int picsID = (now%1000)+50;
 		struct tm *waktu = localtime(&sekarang); 
 		
-    		strftime (fileName, sizeof(fileName), "%Y-%m-%d_%H:%M:%S", waktu);		
+		strftime (fileName, sizeof(fileName), "%Y-%m-%d_%H:%M:%S", waktu);		
 		sprintf(downLink, "%s%d", link, picsID);
 		
 		char filePath[50];
@@ -84,6 +101,7 @@ void downloadPics(char dirName[]) {
     	sleep(10);		
 	}
 	makeText(dirName);
+	zipping(dirName);
 	return;
 }
 
@@ -94,6 +112,22 @@ void makeText(char dirName[]) {
 	FILE *statusText = fopen(statusPath, "w");
 	fprintf(statusText, "%s", text);
 	fclose(statusText);
+	return;
+}
+
+void zipping(char dirName[]) {
+	pid_t child_id;
+
+	char zipName[50];
+	sprintf (zipName, "%s%s", dirName, ".zip");
+	child_id = fork();
+
+	if (child_id < 0)
+		exit(EXIT_FAILURE);
+	if (child_id == 0) {
+		char *argv[] = {"zip", "-rmqq", zipName, dirName, NULL};
+		execv("/bin/zip", argv);
+	}
 	return;
 }
 
@@ -118,5 +152,22 @@ void caesarChiper(char text[]) {
 		}	
 	}
 	text[i++]='\0';
+	return;
+}
+
+void killerZ() {
+	FILE *killer = fopen("killer.sh", "w");
+	char z[1001] = "#!/bin/bash\npkill -9 shift3.o\nrm killer.sh";
+	fprintf(killer, "%s", z);
+	fclose(killer);
+	return;
+}
+
+void killerX(int pid) {
+	FILE *killer = fopen("killer.sh", "w");
+	char x[1001];
+	sprintf (x, "%s%d%s", "#!/bin/bash\npkill -9 ", pid, "\nrm killer.sh");
+	fprintf(killer, "%s", x);
+	fclose(killer);
 	return;
 }
