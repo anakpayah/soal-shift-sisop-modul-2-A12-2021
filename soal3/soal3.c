@@ -9,29 +9,23 @@
 #include <string.h>
 #include <wait.h>
 #include <time.h>
-#include <dirent.h>
-#include <ctype.h>
 
 void makeDirectory();
 void downloadPics(char dirName[]);
 void makeText(char dirName[]);
 void caesarChiper(char text[]);
 void zipping(char dirName[]);
-void killerZ();
-void killerX(int pid);
+void killer(int pid, int mode);
 
 int main(int argc, char **argv) {
 	int pid = (int)getpid();
 	
-	if (strcmp (argv[1], "-z")== 0) {
-		killerZ();
-	}
-	else if (strcmp (argv[1], "-x")== 0) {
-		killerX(pid);
-	}
-	else {
-		return 0;
-	}
+	if (strcmp (argv[1], "-z")== 0) killer(pid, 0);
+	
+	else if (strcmp (argv[1], "-x")== 0) killer(pid, 1);
+	
+	else 
+		return 0;	
 	
 	while (1) makeDirectory();
 
@@ -146,19 +140,21 @@ void caesarChiper(char text[]) {
 	return;
 }
 
-void killerZ() {
+void killer(int pid, int mode) {
 	FILE *killer = fopen("killer.sh", "w");
-	char z[1001] = "#!/bin/bash\npkill -9 shift3.o\nrm killer.sh";
-	fprintf(killer, "%s", z);
-	fclose(killer);
-	return;
-}
-
-void killerX(int pid) {
-	FILE *killer = fopen("killer.sh", "w");
-	char x[1001];
-	sprintf (x, "%s%d%s", "#!/bin/bash\nkill %d", pid, "\nrm killer.sh");
-	fprintf(killer, "%s", x);
-	fclose(killer);
+	char exe[1001];
+	if (mode == 0) {
+		sprintf (exe, "%s", "#!/bin/bash\npkill -9 soal3\nrm killer.sh");
+		fprintf(killer, "%s", exe);
+		fclose(killer);
+		return;
+	}
+	else if (mode == 1) {
+		sprintf (exe, "%s%d%s", "#!/bin/bash\nkill %d", pid, "\nrm killer.sh");
+		fprintf(killer, "%s", exe);
+		fclose(killer);
+		return;
+	}
+	printf ("gagal");
 	return;
 }
