@@ -20,9 +20,9 @@ int main()
 {
   
   time_t w, t;  
-  pid_t pid, sid ;     
-  char birthday[100] , etc[100]; 
+  pid_t pid, sid ;   
   struct tm *tm, *wm;
+  char birthday[100] , etc[100]; 
   
     pid_t child_id = fork();
     pid = fork();  
