@@ -42,8 +42,6 @@ int main(int argc, char **argv) {
 }
 
 void makeDirectory() {
-	int i, jmlh = 2;
-	for (i=1 ; i<jmlh ; i++) {
 		int status;
 		char timeForm[20];
 		time_t sekarang = time(NULL);
@@ -69,8 +67,7 @@ void makeDirectory() {
 		    while(wait(&status) > 0);
 		    downloadPics(timeForm);
 		}
-		sleep(10);    	
-	}
+		sleep(40);    	
 	return;
 }
 
@@ -78,7 +75,8 @@ void downloadPics(char dirName[]) {
 	int i, maxPics = 10;
 	for (i=0 ; i<maxPics ; i++) {
 		pid_t child_id;
-		child_id = fork();		
+		child_id = fork();
+				
 		char downLink[1000], link[] = "https://picsum.photos/";		
 		char fileName[20];
 		time_t sekarang = time(NULL);
@@ -90,7 +88,7 @@ void downloadPics(char dirName[]) {
 		sprintf(downLink, "%s%d", link, picsID);
 		
 		char filePath[50];
-		sprintf (filePath, "%s%c%s%s", dirName, '/', fileName, ".jpg");
+		sprintf (filePath, "%s%c%s%s", dirName, '/', fileName, ".jpeg");
 		
 		if (child_id < 0)
         	exit (EXIT_FAILURE);
@@ -98,7 +96,7 @@ void downloadPics(char dirName[]) {
         	char *argv[] = {"wget", "-q", "--no-check-certificate", downLink, "-O", filePath, NULL};
         	execv ("/bin/wget", argv);
     	}
-    	sleep(10);		
+    	sleep(5);		
 	}
 	makeText(dirName);
 	zipping(dirName);
@@ -116,18 +114,13 @@ void makeText(char dirName[]) {
 }
 
 void zipping(char dirName[]) {
-	pid_t child_id;
-
 	char zipName[50];
 	sprintf (zipName, "%s%s", dirName, ".zip");
-	child_id = fork();
 
-	if (child_id < 0)
-		exit(EXIT_FAILURE);
-	if (child_id == 0) {
-		char *argv[] = {"zip", "-rmqq", zipName, dirName, NULL};
-		execv("/bin/zip", argv);
-	}
+
+	char *argv[] = {"zip", "-rmqq", zipName, dirName, NULL};
+	execv("/bin/zip", argv);
+	
 	return;
 }
 
@@ -166,7 +159,7 @@ void killerZ() {
 void killerX(int pid) {
 	FILE *killer = fopen("killer.sh", "w");
 	char x[1001];
-	sprintf (x, "%s%d%s", "#!/bin/bash\npkill -9 ", pid, "\nrm killer.sh");
+	sprintf (x, "%s%d%s", "#!/bin/bash\nkill %d", pid, "\nrm killer.sh");
 	fprintf(killer, "%s", x);
 	fclose(killer);
 	return;
