@@ -1,3 +1,5 @@
+//ini sebagai cadangan aja tolong cek sama editin kl mau dipakai, aku masih banyak yang gk paham//
+
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdlib.h>
