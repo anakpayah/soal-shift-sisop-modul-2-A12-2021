@@ -86,8 +86,6 @@ int main() {
             if (child_id == 0) {
               char *argv[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download", "-O", "Film.ext", NULL};
 	      execv("/usr/bin/wget", argv);
-            }
-	    else{
 	    }
 	  }
 	}
