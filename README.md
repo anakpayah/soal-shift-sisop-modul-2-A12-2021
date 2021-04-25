@@ -179,13 +179,13 @@ Screenshot setelah 16:22 tanggal 9 April
 ![image](https://user-images.githubusercontent.com/7587945/115998181-427b5a80-a610-11eb-9e7e-914964972af9.png)
 ![image](https://user-images.githubusercontent.com/7587945/115998191-49a26880-a610-11eb-82e6-64b35d704b76.png)
 ![image](https://user-images.githubusercontent.com/7587945/115998207-5aeb7500-a610-11eb-8ddf-7cc645e6338f.png)
-
+![image](https://user-images.githubusercontent.com/7587945/115998431-570c2280-a611-11eb-8318-7746d29009fa.png)
 
 Screenshot setelah 22:22 tanggal 9 April
 ![image](https://user-images.githubusercontent.com/7587945/115998237-82424200-a610-11eb-88e8-1c9d881ab557.png)
 ![image](https://user-images.githubusercontent.com/7587945/115998282-bd447580-a610-11eb-9db0-3d1ee33b108f.png)
 ![image](https://user-images.githubusercontent.com/7587945/115998288-c6354700-a610-11eb-96e6-9a5711644af5.png)
-![image](https://user-images.githubusercontent.com/7587945/115998245-8c644080-a610-11eb-9ee1-0c03f4badf7c.png)
+![image](https://user-images.githubusercontent.com/7587945/115998445-6f7c3d00-a611-11eb-92f6-1512bc13422e.png)
 ![image](https://user-images.githubusercontent.com/7587945/115998272-af8ef000-a610-11eb-8447-d72145f05db3.png)
 
 <hr>
