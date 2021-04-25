@@ -224,3 +224,13 @@ kendala yang dialami hanya typo minor saja pada mode 1 pada line sebagai berikut
 ```sprintf (exe, "%s%d%s", "#!/bin/bash\nkill %d", pid, "\nrm killer.sh");```  
 dilihat setelah kill ada character berupa `%d` yang tidak memiliki makna apa-apa dan menyebabkan error ketika program `killer.sh` dijalankan. revisi yang dilakukan menghapus karakter tersebut.  
 ```sprintf (exe, "%s%d%s", "#!/bin/bash\nkill ", pid, "\nrm killer.sh");```
+
+##### berikut adalah isi `killer.sh` ketika memakai command -z :  
+![image](https://user-images.githubusercontent.com/75328763/115996182-73579180-a608-11eb-86fb-46c8a10e7bd2.png)  
+##### hasil isi ketika killer.sh dijalankan ketika belum selesainya program killr.sh dari command -z
+![image](https://user-images.githubusercontent.com/75328763/115996361-1c9e8780-a609-11eb-9980-572f951a6c48.png)  
+program akan terhenti semuanya, tidak ada kelanjutan program dari parent maupun child lainnya.  
+##### berikut adalah isi `killer.sh` ketika memakai command  -x
+
+
+
