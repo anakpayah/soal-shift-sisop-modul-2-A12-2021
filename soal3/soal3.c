@@ -73,11 +73,11 @@ void downloadPics(char dirName[]) {
 		char fileName[20];
 		time_t sekarang = time(NULL);
 		int now = (int)sekarang;
-		int picsID = (now%1000)+50;
+		int size = (now%1000)+50;
 		struct tm *waktu = localtime(&sekarang); 
 		
 		strftime (fileName, sizeof(fileName), "%Y-%m-%d_%H:%M:%S", waktu);		
-		sprintf(downLink, "%s%d", link, picsID);
+		sprintf(downLink, "%s%d", link, size);
 		
 		char filePath[50];
 		sprintf (filePath, "%s%c%s%s", dirName, '/', fileName, ".jpeg");
