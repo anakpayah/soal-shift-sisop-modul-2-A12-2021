@@ -230,7 +230,10 @@ dilihat setelah kill ada character berupa `%d` yang tidak memiliki makna apa-apa
 ##### hasil isi ketika killer.sh dijalankan ketika belum selesainya program killr.sh dari command -z
 ![image](https://user-images.githubusercontent.com/75328763/115996361-1c9e8780-a609-11eb-9980-572f951a6c48.png)  
 program akan terhenti semuanya, tidak ada kelanjutan program dari parent maupun child lainnya.  
-##### berikut adalah isi `killer.sh` ketika memakai command  -x
-
-
-
+##### berikut adalah isi `killer.sh` ketika memakai command -x  
+![image](https://user-images.githubusercontent.com/75328763/115996686-80758000-a60a-11eb-99e4-658bda9c503e.png)  
+##### hasil isi ketika killer.sh dijalankan ketika belum selesainya program killr.sh dari command -x  
+![image](https://user-images.githubusercontent.com/75328763/115996736-bd417700-a60a-11eb-80a4-3451a052ce69.png)  
+dalam proses ini dilihat bahwa ketika `killer.sh` dijalankan pada tengah program, maka parent akan di matikan, program anak masih berjalan hingga proses penyelesaian (zipping).
+##### Hasil akhir dari zip, gambar, dan text yang terbuat.  
+![image](https://user-images.githubusercontent.com/75328763/115997018-c1ba5f80-a60b-11eb-8168-adccd47b9d55.png)
