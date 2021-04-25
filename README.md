@@ -162,7 +162,7 @@ untuk membuat file program tersebut menggunkanan fungsi `fopen()`, `fprintf()` d
 pid yang diambil didapat dari `getpid()` pada fungsi program utama.  
 ```c
 int main(int argc, char **argv) {
-	***int pid = (int)getpid();***
+	int pid = (int)getpid();
 	
 	if (strcmp (argv[1], "-z")== 0) killer(pid, 0);
 	
@@ -183,7 +183,7 @@ tidak ada kendala dalam pengerjaan soal ini.
 Menambahkan suatu argument pada program .c utama dijalankan yang masing - masing argument tersebut akan berpengaruh pada "killer.sh" yang akan dieksekusi.
 ```c
 int main(int argc, char **argv) {
-	***int pid = (int)getpid();***
+	int pid = (int)getpid();
 	
 	if (strcmp (argv[1], "-z")== 0) killer(pid, 0);
 	
