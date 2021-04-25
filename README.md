@@ -4,7 +4,189 @@ Repo github soal shift modul 2 sisop semester genap tahun 2021
 <hr>
 
 ## Soal nomor 1
+### Penjelasan Soal
+Pada soal ini kita diminta untuk membuat 3 folder dengan nama "Musyik", "Fylm", dan "Pyoto". Kemudian kita mendownload musik, film, dan link dari link untuk di-extract dan dipindahkan ke folder yang dibuat. Semua hal tersebut dilakukan 6 jam sebelum tanggal 9 April pukul 22.22 WIB dan pada waktu 22.22 semua folder akan dizip dengan nama "Lopyu_Stevany.zip".
+### Penjelasan kode tanpa daemon
+```c
+int main() {
+    pid_t child_id;
+    int status;
+    ...
+    ...
+    for(int i=0; i<14; ++i){
+        while ((wait(&status)) > 0);
+        child_id = fork();
 
+        if (child_id < 0) {
+            exit(EXIT_FAILURE); 
+        }
+
+        if (child_id == 0) {
+            execv(path[i][0], &argv[i][0]);
+        } 
+    }
+  return 0;
+}
+```
+Untuk melakukan perintah linux menggunakan c, kita menggunakan execv yang isinya adalah path dari perintah yang ingin dinginkan dan perintahnya tersebut. Pada program ini fork() harus digunakan untuk memanggil execv beberapa kali dimana child process akan menjalankan execv sedangkan parent process melakukan spawning process. Berikut adalah isi dari argv[][] dan path[][].
+
+```c
+    char *argv[][10] = {  {"mkdir", "Musyik", NULL},
+                            {"mkdir", "Fylm", NULL},
+                            {"mkdir", "Pyoto", NULL},
+                            {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1FsrAzb9B5ixooGUs0dGiBr-rC7TS9wTD&export=download", "-O", "Foto.ext", NULL},
+                            {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download", "-O", "Musik.ext", NULL},
+                            {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download", "-O", "Film.ext", NULL},
+                            {"unzip", "*.ext", NULL} ,
+                            {"cp", "-r", "FOTO/.", "Pyoto", NULL},
+                            {"cp", "-r", "MUSIK/.", "Musyik", NULL},
+                            {"cp", "-r", "FILM/.", "Fylm", NULL},
+                            {"rm", "Foto.ext", "Musik.ext", "Film.ext", NULL},
+                            {"rm", "-r", "FOTO", "MUSIK", "FILM", NULL},
+                            {"zip", "-r", "Lopyu_Stevany.zip", "Fylm", "Musyik", "Pyoto", NULL},
+                            {"rm", "-r", "Fylm", "Musyik", "Pyoto", NULL} };
+    char *path[][2] = {   {"/bin/mkdir"},
+                            {"/bin/mkdir"},
+                            {"/bin/mkdir"},
+                            {"/usr/bin/wget"},
+                            {"/usr/bin/wget"},
+                            {"/usr/bin/wget"},
+                            {"/usr/bin/unzip"}, 
+                            {"/usr/bin/cp"},
+                            {"/usr/bin/cp"},
+                            {"/usr/bin/cp"},
+                            {"/usr/bin/rm"},
+                            {"/usr/bin/rm"},
+                            {"/usr/bin/zip"},
+                            {"/usr/bin/rm"} };
+```
+3 baris pertama akan membuat folder dengan nama "Musyik", "Fylm", dan "Pyoto" menggunakan mkdir. Baris 4-6 mendownload file Foto, Musik, dan Film dalam format .ext dari link menggunakan wget. Baris 7 meng-unzip semua file dengan ekstensi .ext. Baris 8-10 meng-copy isi dari file Foto, Musik, dan Film ke dalam folder yang telah dibuat. Baris 13 akan membuat zip bernama "Lopyu_Stevany.zip" yang isinya adalah folder "Fylm", "Musyik", dan "Pyoto" yang sudah diisi dengan file-file yang telah didownload. Baris 14 akan menghapus folder "Fylm", "Musyik", dan "Pyoto".
+
+### Screenshot Output
+![image](https://user-images.githubusercontent.com/7587945/115997477-71dc9800-a60d-11eb-8dab-130484fe2452.png)
+![image](https://user-images.githubusercontent.com/7587945/115997493-815be100-a60d-11eb-96a2-3a916eee9bf0.png)
+![image](https://user-images.githubusercontent.com/7587945/115997524-920c5700-a60d-11eb-88a7-6fe2a325c9e3.png)
+![image](https://user-images.githubusercontent.com/7587945/115997546-a6505400-a60d-11eb-9fb8-baf44e4146d6.png)
+![image](https://user-images.githubusercontent.com/7587945/115997568-b5cf9d00-a60d-11eb-8c65-0edb1cd46368.png)
+
+### Penjelasan kode tanpa daemon (masih error)
+```c
+int main() {
+  pid_t pid, sid;     
+  pid = fork();  
+
+  if (pid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  if (pid > 0) {
+    exit(EXIT_SUCCESS);
+  }
+
+  umask(0);
+
+  sid = setsid();
+  if (sid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  if ((chdir("/home/kelvin/Documents/soal-shift-sisop-modul-2-A12-2021-main/soal1")) < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
+
+  while (1) {
+    pid_t child_id;
+    int status;
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    
+    char *argv[][10] = {  {"mkdir", "Musyik", NULL},
+                            {"mkdir", "Fylm", NULL},
+                            {"mkdir", "Pyoto", NULL},
+                            {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1FsrAzb9B5ixooGUs0dGiBr-rC7TS9wTD&export=download", "-O", "Foto.ext", NULL},
+                            {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download", "-O", "Musik.ext", NULL},
+                            {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download", "-O", "Film.ext", NULL},
+                            {"unzip", "*.ext", NULL} ,
+                            {"cp", "-r", "FOTO/.", "Pyoto", NULL},
+                            {"cp", "-r", "MUSIK/.", "Musyik", NULL},
+                            {"cp", "-r", "FILM/.", "Fylm", NULL},
+                            {"rm", "Foto.ext", "Musik.ext", "Film.ext", NULL},
+                            {"rm", "-r", "FOTO", "MUSIK", "FILM", NULL},
+                            {"zip", "-r", "Lopyu_Stevany.zip", "Fylm", "Musyik", "Pyoto", NULL},
+                            {"rm", "-r", "Fylm", "Musyik", "Pyoto", NULL} };
+    char *path[][2] = {   {"/bin/mkdir"},
+                            {"/bin/mkdir"},
+                            {"/bin/mkdir"},
+                            {"/usr/bin/wget"},
+                            {"/usr/bin/wget"},
+                            {"/usr/bin/wget"},
+                            {"/usr/bin/unzip"}, 
+                            {"/usr/bin/cp"},
+                            {"/usr/bin/cp"},
+                            {"/usr/bin/cp"},
+                            {"/usr/bin/rm"},
+                            {"/usr/bin/rm"},
+                            {"/usr/bin/zip"},
+                            {"/usr/bin/rm"} };
+
+    if(tm.tm_mon + 1 == 4 && tm.tm_mday == 9 && tm.tm_hour == 16 && tm.tm_min == 22){
+        for(int i=0; i<12; ++i){
+            while ((wait(&status)) > 0);
+            child_id = fork();
+
+            if (child_id < 0) {
+                exit(EXIT_FAILURE); 
+            }
+
+            if (child_id == 0) {
+                execv(path[i][0], &argv[i][0]);
+            } 
+        }
+        sleep(60);
+    }
+    if(tm.tm_mon + 1 == 4 && tm.tm_mday == 9 && tm.tm_hour == 22 && tm.tm_min == 22){
+        for(int i=12; i<14; ++i){
+            while ((wait(&status)) > 0);
+            child_id = fork();
+
+            if (child_id < 0) {
+                exit(EXIT_FAILURE); 
+            }
+
+            if (child_id == 0) {
+                execv(path[i][0], &argv[i][0]);
+            }
+        }   
+        break;
+    }
+
+    sleep(10);
+  }
+
+  return 0;
+}
+```
+supaya perintah berjalan secara otomatis pada suatu waktu, kita perlu menggunakan daemon supaya program berjalan dibackground dan perintah akan dilaksanakan saat waktunya telah datang. Kita menggunakan template daemon yang terdapat pada daemon. Disini `time_t t = time(NULL);` dan `struct tm tm = *localtime(&t);` digunakan untuk mendapatkan waktu yang akan tersimpan di tm.tm_mon untuk bulan, tm.tm_mday untuk hari, tm.tm_hour untuk jam dan tm.tm_min untuk menit. Program akan jalan dan tidak melakukan apa-apa jika waktunya belum 16:22 atau 22:22 tanggal 9 April dan sleep selama 10 detik, kemudian program akan loop. Jika sudah jam 16:22 tanggal 9 April maka program akan menjalankan perintah `{"mkdir", "Musyik", NULL}` sampai perintah `{"rm", "-r", "FOTO", "MUSIK", "FILM", NULL}` dan sleep selama 60 detik supaya saat loop akan lewat 1 menit sehingga tidak lagi jam 16:22 dan program tidak akan menjalankan perintah tersebut lagi. Program akan melaksanakan perintah yang tersisa jika sudah jam 22:22 tanggal 9 April.
+#### Kendala
+program yang menggunakan daemon ini mengalami kendala dimana perintah cp yang mengcopy file yang didownload ke folder "Pyoto", "Musyik", dan "Fylm" tidak berjalan sehingga pada akhirnya isi dari 3 folder tersebut akan kosong.
+
+### Screenshot Output
+Screenshot setelah 16:22 tanggal 9 April
+![image](https://user-images.githubusercontent.com/7587945/115998181-427b5a80-a610-11eb-9e7e-914964972af9.png)
+![image](https://user-images.githubusercontent.com/7587945/115998191-49a26880-a610-11eb-82e6-64b35d704b76.png)
+![image](https://user-images.githubusercontent.com/7587945/115998207-5aeb7500-a610-11eb-8ddf-7cc645e6338f.png)
+
+
+Screenshot setelah 22:22 tanggal 9 April
+![image](https://user-images.githubusercontent.com/7587945/115998237-82424200-a610-11eb-88e8-1c9d881ab557.png)
+![image](https://user-images.githubusercontent.com/7587945/115998282-bd447580-a610-11eb-9db0-3d1ee33b108f.png)
+![image](https://user-images.githubusercontent.com/7587945/115998288-c6354700-a610-11eb-96e6-9a5711644af5.png)
+![image](https://user-images.githubusercontent.com/7587945/115998245-8c644080-a610-11eb-9ee1-0c03f4badf7c.png)
+![image](https://user-images.githubusercontent.com/7587945/115998272-af8ef000-a610-11eb-8447-d72145f05db3.png)
 
 <hr>
 
@@ -230,10 +412,7 @@ dilihat setelah kill ada character berupa `%d` yang tidak memiliki makna apa-apa
 ##### hasil isi ketika killer.sh dijalankan ketika belum selesainya program killr.sh dari command -z
 ![image](https://user-images.githubusercontent.com/75328763/115996361-1c9e8780-a609-11eb-9980-572f951a6c48.png)  
 program akan terhenti semuanya, tidak ada kelanjutan program dari parent maupun child lainnya.  
-##### berikut adalah isi `killer.sh` ketika memakai command -x  
-![image](https://user-images.githubusercontent.com/75328763/115996686-80758000-a60a-11eb-99e4-658bda9c503e.png)  
-##### hasil isi ketika killer.sh dijalankan ketika belum selesainya program killr.sh dari command -x  
-![image](https://user-images.githubusercontent.com/75328763/115996736-bd417700-a60a-11eb-80a4-3451a052ce69.png)  
-dalam proses ini dilihat bahwa ketika `killer.sh` dijalankan pada tengah program, maka parent akan di matikan, program anak masih berjalan hingga proses penyelesaian (zipping).
-##### Hasil akhir dari zip, gambar, dan text yang terbuat.  
-![image](https://user-images.githubusercontent.com/75328763/115997018-c1ba5f80-a60b-11eb-8168-adccd47b9d55.png)
+##### berikut adalah isi `killer.sh` ketika memakai command  -x
+
+
+
