@@ -150,7 +150,7 @@ void killer(int pid, int mode) {
 		return;
 	}
 	else if (mode == 1) {
-		sprintf (exe, "%s%d%s", "#!/bin/bash\nkill %d", pid, "\nrm killer.sh");
+		sprintf (exe, "%s%d%s", "#!/bin/bash\nkill ", pid, "\nrm killer.sh");
 		fprintf(killer, "%s", exe);
 		fclose(killer);
 		return;
